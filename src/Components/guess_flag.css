@@ -226,3 +226,28 @@ button:not(.language_btn):hover {
 .next-btn:hover {
   background-color: #34a334;
 }
+
+.keyboard-row-space {
+  display: flex;
+  justify-content: center;
+}
+
+.key-btn-space {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 90%;
+  padding: 0.6rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: 0.2s;
+}
+
+.key-btn-space:hover {
+  background: rgba(255,255,255,0.25);
+}

@@ -16,7 +16,10 @@ function GuessFlag() {
   const [modalText, setModalText] = useState('')
   const [score, setScore] = useState(0)
 
-  const handleLanguageChange = () => setCurrentLanguage(prev => (prev === 'gb' ? 'ge' : 'gb'))
+  const handleLanguageChange = () => {
+    setCurrentLanguage(prev => (prev === 'gb' ? 'ge' : 'gb'))
+    setCurrentGuess("")
+  }
 
   const checkAnswer = () => {
     if (currentGuess.length < currentCountry.name.length) {
@@ -27,7 +30,9 @@ function GuessFlag() {
     const isCorrect = currentGuess.toLowerCase() === currentCountry.name.toLowerCase()
     setGuessed(isCorrect)
     setEnterPress(true)
-    if (isCorrect) setScore(prev => prev + 10)
+    if (isCorrect && !guessed) {
+        setScore(prev => prev + 10)
+      }
   }
 
   const renderNextFlag = () => {
@@ -45,40 +50,80 @@ function GuessFlag() {
       currentLanguage === 'ge'
         ? countries_ka.find(c => c.code === currentCountry.code)
         : countries_en.find(c => c.code === currentCountry.code)
+  
     setCurrentCountry(countryObj)
     setCurrentGuess('')
     setEnterPress(false)
+    setGuessed(false)
   }, [currentLanguage])
 
   useEffect(() => {
     const keyDownHandle = e => {
       const key = e.key
-      if (key === 'Backspace') return setCurrentGuess(prev => prev.slice(0, -1))
-      if (key === 'Enter') return checkAnswer()
-      if (/^[a-zA-Z\u10A0-\u10FF ]$/.test(key)) setCurrentGuess(prev => prev + key)
+  
+      if (key === 'Backspace') {
+        setCurrentGuess(prev => prev.slice(0, -1))
+        return
+      }
+  
+      if (key === 'Enter') {
+        checkAnswer()
+        return
+      }
+  
+      if (key === ' ') {
+        setCurrentGuess(prev => prev + ' ')
+        return
+      }
+  
+      const allowedKeys =
+        currentLanguage === 'ge'
+          ? 'აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ'.split('')
+          : 'abcdefghijklmnopqrstuvwxyz'.split('')
+  
+      if (
+        (currentLanguage === 'ge' && allowedKeys.includes(key) && currentGuess.length < currentCountry.name.length) ||
+        (currentLanguage === 'gb' && allowedKeys.includes(key.toLowerCase()) && currentGuess.length < currentCountry.name.length)
+      ) {
+        setCurrentGuess(prev => prev + key)
+      }
     }
+  
     document.addEventListener('keydown', keyDownHandle)
     return () => document.removeEventListener('keydown', keyDownHandle)
-  }, [currentGuess])
+  }, [currentLanguage, currentCountry, currentGuess])
+  
 
-  const english_keyboard = [
+  const georgianRows = [
+    ['ა','ბ','გ','დ','ე','ვ','ზ','თ','ი','კ','ლ'], 
+    ['მ','ნ','ო','პ','ჟ','რ','ს','ტ','⏎'],
+    ['უ','ფ','ქ','ღ','ყ','შ','ჩ','ც','ძ','წ','ჭ','ხ','ჯ','ჰ','⌫'], 
+    ['␣']
+  ];
+  
+  const englishRows = [
     'QWERTYUIOP'.split(''),
     [...'ASDFGHJKL'.split(''), '⏎'],
-    [...'ZXCVBNM'.split(''), '⌫']
-  ]
-
-  const georgian_keyboard = [
-    ['ა','ბ','გ','დ','ე','ვ','ზ','თ','ი','კ','ლ'],
-    ['მ','ნ','ო','პ','ჟ','რ','ს','ტ','⏎'],
-    ['უ','ფ','ქ','ღ','ყ','შ','ჩ','ც','ძ','წ','ჭ','ხ','ჯ','ჰ','⌫']
+    [...'ZXCVBNM'.split(''), '⌫'],
+    ['␣']
   ];
 
-  const rows = currentLanguage === 'ge' ? georgian_keyboard : english_keyboard;
+  const rows = currentLanguage === 'ge' ? georgianRows : englishRows;
   
 
   const handleKeyClick = key => {
+    const maxLength = currentCountry.name.length
+  
     if (key === '⏎') return checkAnswer()
     if (key === '⌫') return setCurrentGuess(prev => prev.slice(0, -1))
+    if (key === '␣') {
+      if (!currentGuess.endsWith(' ') && currentGuess.length < maxLength) {
+        setCurrentGuess(prev => prev + ' ')
+      }
+      return
+    }
+  
+    if (currentGuess.length >= maxLength) return
     setCurrentGuess(prev => prev + key)
   }
 
@@ -134,6 +179,7 @@ function GuessTiles({ countryName, currentGuess, final, guessed }) {
   const firstEmpty = currentGuess.length
   let cls = 'tile'
   if (final) cls += guessed ? ' success' : ' fail'
+
   for (let i = 0; i < countryName.length; i++) {
     if (i === firstEmpty) {
       tiles.push(
@@ -145,6 +191,7 @@ function GuessTiles({ countryName, currentGuess, final, guessed }) {
     }
     tiles.push(<div key={i} className={cls}>{currentGuess[i]}</div>)
   }
+
   return tiles
 }
 
