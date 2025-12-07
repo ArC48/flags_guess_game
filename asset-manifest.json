@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/flags_guess_game/static/css/main.32749987.css",
+    "main.css": "/flags_guess_game/static/css/main.8db07664.css",
     "main.js": "/flags_guess_game/static/js/main.9cc1ddc0.js",
     "static/js/453.d30ebb78.chunk.js": "/flags_guess_game/static/js/453.d30ebb78.chunk.js",
     "index.html": "/flags_guess_game/index.html",
-    "main.32749987.css.map": "/flags_guess_game/static/css/main.32749987.css.map",
+    "main.8db07664.css.map": "/flags_guess_game/static/css/main.8db07664.css.map",
     "main.9cc1ddc0.js.map": "/flags_guess_game/static/js/main.9cc1ddc0.js.map",
     "453.d30ebb78.chunk.js.map": "/flags_guess_game/static/js/453.d30ebb78.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.32749987.css",
+    "static/css/main.8db07664.css",
     "static/js/main.9cc1ddc0.js"
   ]
 }
