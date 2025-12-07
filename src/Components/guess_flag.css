@@ -123,22 +123,21 @@ button:not(.language_btn):hover {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  width: min(90vw, 480px);
+  width: 95vw;
+  max-width: 480px;
   margin-top: 1rem;
 }
 
 .keyboard-row {
   display: flex;
   justify-content: center;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
 .key-btn {
-  flex: 1 1 0;
-  min-width: 32px;
-  max-width: 50px;
-  padding: 0.5rem 0.25rem;
-  font-size: clamp(14px, 2vw, 18px);
+  flex: 1 1 auto;
+  padding: 0.45rem 0.2rem;
+  font-size: clamp(12px, 3vw, 16px);
   border-radius: 6px;
   background: rgba(255,255,255,0.15);
   border: 1px solid rgba(255,255,255,0.25);
@@ -147,16 +146,27 @@ button:not(.language_btn):hover {
   cursor: pointer;
   text-transform: uppercase;
   transition: 0.2s;
+  min-width: 0; /* allow shrinking below previous min-width */
 }
 
 .key-btn:hover {
   background: rgba(255,255,255,0.25);
 }
 
-@media (max-width: 600px) {
-  .tiles {
-    gap: 0.3rem;
+.enter-key, .backspace-key {
+  flex: 1.3 1 auto; /* slightly wider than normal keys */
+}
+
+@media (max-width: 400px) {
+  .keyboard-row {
+    gap: 0.1rem;
   }
+  .key-btn {
+    font-size: clamp(10px, 3vw, 14px);
+    padding: 0.35rem 0.15rem;
+  }
+
+
 
   .language_img {
     width: 24px;
@@ -176,7 +186,6 @@ button:not(.language_btn):hover {
   }
 }
 
-
 .flex-row {
   display: flex;
   flex-direction: row;
@@ -185,7 +194,7 @@ button:not(.language_btn):hover {
 .check-btn {
   height: 3rem;
   width: 5rem;
-  background-color: #1e90ff !important; /* blue */
+  background-color: #1e90ff;
   color: #fff;
   margin: 0.5rem;
   border-radius: 8px;
@@ -196,13 +205,13 @@ button:not(.language_btn):hover {
 }
 
 .check-btn:hover {
-  background-color: #0f78d1; /* darker blue on hover */
+  background-color: #0f78d1;
 }
 
 .next-btn {
   height: 3rem;
   width: 5rem;
-  background-color: #42b842 !important; /* green */
+  background-color: #42b842;
   color: #fff;
   margin: 0.5rem;
   border-radius: 8px;
@@ -213,5 +222,5 @@ button:not(.language_btn):hover {
 }
 
 .next-btn:hover {
-  background-color: #34a334; /* darker green on hover */
+  background-color: #34a334;
 }
