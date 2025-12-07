@@ -194,7 +194,7 @@ button:not(.language_btn):hover {
 .check-btn {
   height: 3rem;
   width: 5rem;
-  background-color: #1e90ff;
+  background-color: #1e90ff !important;
   color: #fff;
   margin: 0.5rem;
   border-radius: 8px;
@@ -211,7 +211,7 @@ button:not(.language_btn):hover {
 .next-btn {
   height: 3rem;
   width: 5rem;
-  background-color: #42b842;
+  background-color: #42b842 !important;
   color: #fff;
   margin: 0.5rem;
   border-radius: 8px;
