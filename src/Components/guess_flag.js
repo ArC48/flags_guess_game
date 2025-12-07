@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {COUNTRY_CODES_EN, COUNTRY_CODES_KA} from '../country_codes.js'
 import './guess_flag.css'
+import CenteredModal from './modal.js';
 
 const countries_en = COUNTRY_CODES_EN;
 const countries_ka = COUNTRY_CODES_KA;
@@ -11,16 +12,48 @@ function GuessFlag() {
     const [currentGuess, setCurrentGuess] = useState("");
     const [guessed, setGuessed] = useState(false);
     const [enterPress, setEnterPress] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [modalText, setModalText] = useState("")
+    const [score, setScore] = useState(0);
 
     const handleLanguageChange = () => {
         setCurrentLanguage(prev => prev === "gb" ? "ge" : "gb")
     }
 
     const checkAnswer = () => {
+        if (currentGuess.length < currentCountry.name.length) {
+            console.log(currentGuess, currentCountry.name);
+            let message = ""
+            if(currentLanguage === "gb") {
+                message = "Fill all the tiles!"
+            } else {
+                message = "შეავსე ყველა უჯრა!"
+            }
+            setModalText(message);
+            setShowModal(true);
+            return;
+        }
         const isCorrect = currentGuess?.toLowerCase() === currentCountry?.name?.toLowerCase();
         setGuessed(isCorrect);
         setEnterPress(true);
+        if(isCorrect) {
+            setScore(prev => prev + 10);
+
+        }
         return;
+    }
+
+    const renderNextFlag = () => {
+        let nextCountry = ""
+        if(currentLanguage == "ge") {
+            nextCountry = countries_ka[Math.floor(Math.random() * COUNTRY_CODES_KA.length)];
+        }
+        else {
+            nextCountry = countries_en[Math.floor(Math.random() * COUNTRY_CODES_EN.length)];
+        }
+        setCurrentCountry(nextCountry);
+        setCurrentGuess("");
+        setEnterPress(false);
     }
 
     useEffect(() => {
@@ -64,16 +97,19 @@ function GuessFlag() {
 
   return (
     <div className="center">
-        <button onClick={(e) => {
-            handleLanguageChange();
-            e.currentTarget.blur();
-                }
-            } 
-        className='language_btn'
-        >
-            <img src={`https://flagfeed.com/flags/${currentLanguage.toUpperCase()}`} className='language_img'/>
-            <p>{currentLanguage === "ge" ? "ქართული" : 'English'}</p>
-        </button>
+        <div>
+            <p>{currentLanguage === "ge" ? "ქულა:" : 'score:'} {score}</p>
+            <button onClick={(e) => {
+                handleLanguageChange();
+                e.currentTarget.blur();
+                    }
+                } 
+            className='language_btn'
+            >
+                <img src={`https://flagfeed.com/flags/${currentLanguage.toUpperCase()}`} className='language_img'/>
+                <p>{currentLanguage === "ge" ? "ქართული" : 'English'}</p>
+            </button>
+        </div>
         <img
             src={`https://flagfeed.com/flags/${currentCountry.code}`}
             alt={`${currentCountry.code.toUpperCase()} Flag`}
@@ -81,7 +117,7 @@ function GuessFlag() {
             height={312}
             className='flag-picture'
         />
-        {/* <p>{currentCountry.name}</p> */}
+        <CenteredModal isOpen={showModal} onClose={() => setShowModal(false)} message={modalText}/>
 
         <div className='tiles'>
             <GuessTiles countryName={currentCountry.name} currentGuess={currentGuess || ""} final={enterPress} guessed={guessed}/>
@@ -89,7 +125,16 @@ function GuessFlag() {
 
         <button onClick={() => checkAnswer()} className='check-btn'>
             {currentLanguage === "ge" ? "შემოწმება" : 'Check'}
+
         </button>
+        <button onClick={(e) => {
+                renderNextFlag()
+                e.currentTarget.blur()
+                }
+            } >
+            {currentLanguage === "ge" ? "შემდეგი" : 'next'}
+        </button>
+            
     </div>
   );
 }
@@ -99,7 +144,6 @@ function GuessTiles({ countryName, currentGuess, final, guessed }) {
     const firstEmpty = currentGuess.length;
     let cls = "tile";
     if (final) {
-        console.log(guessed);
         if (guessed) {
             cls += " success";
         }

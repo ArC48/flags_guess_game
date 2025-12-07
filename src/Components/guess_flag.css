@@ -1,97 +1,152 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@100..900&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.tile {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 22px;
-    font-weight: 600;
-    font-family: "Noto Sans Georgian", "Noto Sans", Arial, Helvetica, sans-serif;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 3px solid rgb(70, 70, 70);
-    position: relative;
-}
-.cursor {
-    width: 2px;
-    height: 80%;
-    background-color: rgb(70, 70, 70);
-    animation: blink 1s step-start infinite;
-    position: absolute;
-    left: 50%;
-    top: 10%;
-  }
-  
-  @keyframes blink {
-    0%, 50% {
-      opacity: 1;
-    }
-    50.01%, 100% {
-      opacity: 0;
-    }
-  }
-
-.tiles {
-    display: flex;
-    flex-direction: row;
-    gap: 4px;
-}
-
-.space {
-    border: none;
-    width: 30px;
-}
-
+/* Base Layout */
 .center {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-}
-
-.language_btn {
-    width: 7rem;
-    height: 2rem;
-    cursor: pointer;
+    min-height: 100vh;
+    gap: 1.5rem;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    color: #fff;
+    text-align: center;
+  }
+  
+  /* Top bar */
+  .center > div:first-child {
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+    flex-wrap: wrap;
     align-items: center;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
-}
-
-.language_img {
-    width: 20%;
-    height: auto;
-}
-
-.success {
-    background-color: rgb(153, 255, 0);
-    color: rgb(0, 90, 0);
-}
-
-.fail {
-    background-color: rgb(255, 101, 101);
-    color: rgb(204, 0, 0);
-}
-
-.check-btn {
-    width: 5rem;
-    height: 2rem;
-    margin-top: 1rem;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  /* Language button */
+  .language_btn {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.1);
+    border: none;
     cursor: pointer;
-}
-
-.flag-picture {
-    margin: 2rem;
-}
+    transition: 0.2s;
+  }
+  
+  .language_img {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+  }
+  
+  /* Flag image */
+  .flag-picture {
+    width: min(60vw, 300px);
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  }
+  
+  /* Tile container */
+  .tiles {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: nowrap;
+  }
+  
+  /* Tiles */
+  .tile {
+    width: clamp(32px, 7vw, 45px);
+    height: clamp(38px, 8vw, 55px);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(16px, 3vw, 24px);
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: 0.25s;
+    border: 2px solid rgba(255,255,255,0.18);
+  }
+  
+  /* Cursor */
+  .cursor {
+    width: 50%;
+    height: 5px;
+    background: #fff;
+    border-radius: 2px;
+    animation: blink 0.6s infinite;
+  }
+  
+  /* Animated feedback */
+  .tile.success {
+    background: #42b842;
+    border-color: #34a334;
+    animation: pulseSuccess 0.4s;
+  }
+  .tile.fail {
+    background: #d94545;
+    border-color: #c13838;
+    animation: shakeFail 0.25s;
+  }
+  
+  /* Buttons */
+  button.check-btn,
+  button:not(.language_btn) {
+    padding: 0.6rem 1.4rem;
+    font-size: clamp(14px, 3.2vw, 18px);
+    border-radius: 8px;
+    font-weight: 600;
+    background: #ffb72b;
+    color: #1b1b1b;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+  }
+  
+  button.check-btn:hover,
+  button:not(.language_btn):hover {
+    background: #ffd056;
+  }
+  
+  /* Animations */
+  @keyframes blink {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+  
+  @keyframes shakeFail {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+  }
+  
+  @keyframes pulseSuccess {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  
+  /* RESPONSIVE BREAKPOINTS */
+  
+  /* Medium screens */
+  @media (max-width: 600px) {
+    .tiles {
+      gap: 0.3rem;
+    }
+  
+    .language_img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  /* Small screens like iPhone SE */
+  @media (max-width: 400px) {
+    .tiles {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+  
