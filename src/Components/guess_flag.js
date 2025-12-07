@@ -61,11 +61,20 @@ function GuessFlag() {
     return () => document.removeEventListener('keydown', keyDownHandle)
   }, [currentGuess])
 
-  const rows = [
+  const english_keyboard = [
     'QWERTYUIOP'.split(''),
     [...'ASDFGHJKL'.split(''), '⏎'],
     [...'ZXCVBNM'.split(''), '⌫']
   ]
+
+  const georgian_keyboard = [
+    ['ა','ბ','გ','დ','ე','ვ','ზ','თ','ი','კ','ლ'],
+    ['მ','ნ','ო','პ','ჟ','რ','ს','ტ','⏎'],
+    ['უ','ფ','ქ','ღ','ყ','შ','ჩ','ც','ძ','წ','ჭ','ხ','ჯ','ჰ','⌫']
+  ];
+
+  const rows = currentLanguage === 'ge' ? georgian_keyboard : english_keyboard;
+  
 
   const handleKeyClick = key => {
     if (key === '⏎') return checkAnswer()
