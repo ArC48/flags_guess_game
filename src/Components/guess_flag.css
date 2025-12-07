@@ -202,6 +202,7 @@ button:not(.language_btn):hover {
   cursor: pointer;
   border: none;
   transition: 0.2s;
+  font-size: 13px !important;
 }
 
 .check-btn:hover {
@@ -219,6 +220,7 @@ button:not(.language_btn):hover {
   cursor: pointer;
   border: none;
   transition: 0.2s;
+  font-size: 13px !important;
 }
 
 .next-btn:hover {
